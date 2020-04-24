@@ -8,7 +8,7 @@ import { useCurrentPatient } from "@openmrs/esm-api";
 import { useRouteMatch, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import SummaryCardFooter from "../../ui-components/cards/summary-card-footer.component";
-import { openVitalsWorkspaceTab } from "./vitals-utils";
+import { openWorkspaceTab } from "../shared-utils";
 import VitalsForm from "./vitals-form.component";
 
 export default function VitalsOverview(props: VitalsOverviewProps) {
@@ -59,7 +59,7 @@ export default function VitalsOverview(props: VitalsOverviewProps) {
       styles={{ width: "100%" }}
       link={props.basePath}
       addComponent={VitalsForm}
-      showComponent={() => openVitalsWorkspaceTab(VitalsForm, "Vitals Form")}
+      showComponent={() => openWorkspaceTab(VitalsForm, "Vitals Form")}
     >
       <table className={`omrs-type-body-regular ${styles.vitalsTable}`}>
         <thead>
