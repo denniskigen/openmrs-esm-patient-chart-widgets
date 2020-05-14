@@ -11,7 +11,7 @@ import {
 } from "./vitals-card.resource";
 import dayjs from "dayjs";
 import { createErrorHandler } from "@openmrs/esm-error-handling";
-import { difference } from "lodash-es";
+import difference from "lodash-es/difference";
 import { DataCaptureComponentProps } from "../shared-utils";
 
 export default function VitalsForm(props: VitalsFormProps) {

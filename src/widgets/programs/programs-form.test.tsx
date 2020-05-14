@@ -1,5 +1,5 @@
 import React from "react";
-import { cleanup, render, wait } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { useCurrentPatient } from "@openmrs/esm-api";
 import {
   fetchPrograms,
@@ -19,6 +19,7 @@ import {
 import { mockSessionDataResponse } from "../../../__mocks__/session.mock";
 import { BrowserRouter } from "react-router-dom";
 import { of } from "rxjs/internal/observable/of";
+import "@testing-library/jest-dom/extend-expect";
 
 const mockUseCurrentPatient = useCurrentPatient as jest.Mock;
 const mockFetchLocations = fetchLocations as jest.Mock;
@@ -43,7 +44,6 @@ jest.mock("@openmrs/esm-api", () => ({
 describe("<ProgramsForm />", () => {
   let match = { params: {}, isExact: false, path: "/", url: "/" };
 
-  afterEach(cleanup);
   beforeEach(() => {
     mockUseCurrentPatient.mockReturnValue([
       false,
@@ -60,59 +60,50 @@ describe("<ProgramsForm />", () => {
   it("renders without dying", async () => {
     mockFetchEnrolledPrograms.mockReturnValue(of(mockEnrolledProgramsResponse));
 
-    const wrapper = render(
+    render(
       <BrowserRouter>
         <ProgramsForm match={match} />
       </BrowserRouter>
     );
 
-    await wait(() => {
-      expect(wrapper).toBeDefined();
-    });
+    await screen.findByText("Add a new program");
   });
 
   it("renders the program form with all the appropriate fields and values", async () => {
     mockFetchEnrolledPrograms.mockReturnValue(of(mockEnrolledProgramsResponse));
 
-    const wrapper = render(
+    render(
       <BrowserRouter>
         <ProgramsForm match={match} />
       </BrowserRouter>
     );
 
-    await wait(() => {
-      expect(wrapper).toBeDefined();
-      expect(wrapper.getByText("Add a new program").textContent).toBeTruthy();
-      expect(wrapper.getByText("Program").textContent).toBeTruthy();
-      expect(wrapper.getByText("Choose a program:").textContent).toBeTruthy();
-      expect(
-        wrapper.getByText("Oncology Screening and Diagnosis").textContent
-      ).toBeTruthy();
-      expect(
-        wrapper.getByText("HIV Differentiated Care").textContent
-      ).toBeTruthy();
-      expect(wrapper.getByText("Date enrolled").textContent).toBeTruthy();
-      expect(wrapper.getByText("Date completed").textContent).toBeTruthy();
-      expect(wrapper.getByText("Enrollment location").textContent).toBeTruthy();
-      expect(wrapper.getByText("Choose a location:").textContent).toBeTruthy();
-      expect(wrapper.getByText("Amani Hospital").textContent).toBeTruthy();
-      expect(wrapper.getByText("Inpatient Ward").textContent).toBeTruthy();
-      expect(wrapper.getByText("Isolation Ward").textContent).toBeTruthy();
-      expect(wrapper.getByText("Laboratory").textContent).toBeTruthy();
-      expect(wrapper.getByText("Mosoriot Pharmacy").textContent).toBeTruthy();
-      expect(
-        wrapper.getByText("Mosoriot Subcounty Hospital").textContent
-      ).toBeTruthy();
-      expect(wrapper.getByText("MTRH").textContent).toBeTruthy();
-      expect(wrapper.getByText("MTRH Module 4").textContent).toBeTruthy();
-      expect(wrapper.getByText("Outpatient Clinic").textContent).toBeTruthy();
-      expect(wrapper.getByText("Pharmacy").textContent).toBeTruthy();
-      expect(wrapper.getByText("Registration Desk").textContent).toBeTruthy();
-      expect(wrapper.getByText("Unknown Location").textContent).toBeTruthy();
-      expect(wrapper.getAllByRole("button").length).toEqual(2);
-      expect(wrapper.getAllByRole("button")[0].textContent).toEqual("Cancel");
-      expect(wrapper.getAllByRole("button")[1].textContent).toEqual("Enroll");
-    });
+    await screen.findByText("Add a new program");
+    expect(screen.getByText("Add a new program")).toBeInTheDocument();
+    expect(screen.getByText("Program")).toBeInTheDocument();
+    expect(screen.getByText("Choose a program:")).toBeInTheDocument();
+    expect(
+      screen.getByText("Oncology Screening and Diagnosis")
+    ).toBeInTheDocument();
+    expect(screen.getByText("HIV Differentiated Care")).toBeInTheDocument();
+    expect(screen.getByLabelText("Date enrolled")).toBeInTheDocument();
+    expect(screen.getByLabelText("Date completed")).toBeInTheDocument();
+    expect(screen.getByLabelText("Enrollment location")).toBeInTheDocument();
+    expect(screen.getByText("Amani Hospital")).toBeInTheDocument();
+    expect(screen.getByText("Inpatient Ward")).toBeInTheDocument();
+    expect(screen.getByText("Isolation Ward")).toBeInTheDocument();
+    expect(screen.getByText("Laboratory")).toBeInTheDocument();
+    expect(screen.getByText("Mosoriot Pharmacy")).toBeInTheDocument();
+    expect(screen.getByText("Mosoriot Subcounty Hospital")).toBeInTheDocument();
+    expect(screen.getByText("MTRH")).toBeInTheDocument();
+    expect(screen.getByText("MTRH Module 4")).toBeInTheDocument();
+    expect(screen.getByText("Outpatient Clinic")).toBeInTheDocument();
+    expect(screen.getByText("Pharmacy")).toBeInTheDocument();
+    expect(screen.getByText("Registration Desk")).toBeInTheDocument();
+    expect(screen.getByText("Unknown Location")).toBeInTheDocument();
+    expect(screen.getAllByRole("button").length).toEqual(2);
+    expect(screen.getAllByRole("button")[0].textContent).toEqual("Cancel");
+    expect(screen.getAllByRole("button")[1].textContent).toEqual("Enroll");
   });
 
   it("renders the edit program form when the edit button is clicked on an existing program", async () => {
@@ -130,23 +121,21 @@ describe("<ProgramsForm />", () => {
       url: "/"
     };
 
-    const wrapper = render(
+    render(
       <BrowserRouter>
         <ProgramsForm match={match} />
       </BrowserRouter>
     );
 
-    await wait(() => {
-      expect(wrapper).toBeDefined();
-      expect(wrapper.getByText("Edit Program").textContent).toBeTruthy();
-      expect(
-        wrapper.getByText("Oncology Screening and Diagnosis").textContent
-      ).toBeTruthy();
-      expect(wrapper.getByText("Date enrolled").textContent).toBeTruthy();
-      expect(wrapper.getByText("Date completed").textContent).toBeTruthy();
-      expect(wrapper.getByText("Enrollment location").textContent).toBeTruthy();
-      expect(wrapper.getByText("Save").textContent).toBeTruthy();
-      expect(wrapper.getByText("Cancel").textContent).toBeTruthy();
-    });
+    await screen.findByText("Edit Program");
+    expect(screen.getByText("Edit Program")).toBeInTheDocument();
+    expect(
+      screen.getByText("Oncology Screening and Diagnosis")
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText("Date enrolled")).toBeInTheDocument();
+    expect(screen.getByLabelText("Date completed")).toBeInTheDocument();
+    expect(screen.getByLabelText("Enrollment location")).toBeInTheDocument();
+    expect(screen.getByText("Save")).toBeInTheDocument();
+    expect(screen.getByText("Cancel")).toBeInTheDocument();
   });
 });

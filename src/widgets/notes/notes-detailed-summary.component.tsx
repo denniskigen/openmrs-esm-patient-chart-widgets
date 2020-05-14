@@ -8,7 +8,6 @@ import { createErrorHandler } from "@openmrs/esm-error-handling";
 import { formatDate } from "../heightandweight/heightandweight-helper";
 import { useTranslation } from "react-i18next";
 import VisitNotes from "./visit-note.component";
-import { isEmpty } from "lodash-es";
 import { openWorkspaceTab } from "../shared-utils";
 
 function NotesDetailedSummary(props: NotesDetailedSummaryProps) {
@@ -129,8 +128,9 @@ function NotesDetailedSummary(props: NotesDetailedSummaryProps) {
                         </div>
                       </td>
                       <td className={styles.noteAuthor}>
-                        {!isEmpty(note.encounterProviders)
-                          ? note?.encounterProviders[0].provider.person.display
+                        {note.encounterProviders.length > 0
+                          ? note?.encounterProviders[0]?.provider?.person
+                              ?.display
                           : "\u2014"}
                       </td>
                       <td
@@ -213,6 +213,8 @@ function NotesDetailedSummary(props: NotesDetailedSummaryProps) {
           boxShadow: "none",
           border: "none"
         }}
+        addComponent={VisitNotes}
+        showComponent={() => openWorkspaceTab(VisitNotes, "Visit Note")}
       >
         <div className={`${styles.emptyNotes} omrs-bold`}>
           <p>No Notes are documented</p>

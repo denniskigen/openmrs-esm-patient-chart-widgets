@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./medication-order-basket.css";
 import SummaryCard from "../../ui-components/cards/summary-card.component";
-import { isEmpty, debounce } from "lodash";
+import debounce from "lodash-es/debounce";
 import {
   getDrugByName,
   saveNewDrugOrder,
@@ -191,12 +191,12 @@ export default function MedicationOrderBasket(
     <div className={styles.medicationOrderBasketContainer}>
       <div
         className={`${styles.medicationHeader} ${
-          !isEmpty(searchResults) ? styles.modal : ""
+          searchResults.length ? styles.modal : ""
         }`}
       >
         <div
           className={`${styles.medicationHeader} ${
-            !isEmpty(searchResults) ? styles.modalContent : ""
+            searchResults.length ? styles.modalContent : ""
           }`}
         >
           <SummaryCard name="Order Medication" styles={{ width: "100%" }}>
@@ -215,7 +215,7 @@ export default function MedicationOrderBasket(
           </SummaryCard>
           <div
             className={`${styles.searchResults} ${
-              isEmpty(searchResults) ? styles.hide : ""
+              searchResults.length === 0 ? styles.hide : ""
             }`}
           >
             <table>

@@ -12,7 +12,6 @@ import SummaryCard from "../../ui-components/cards/summary-card.component";
 import SummaryCardFooter from "../../ui-components/cards/summary-card-footer.component";
 import EmptyState from "../../ui-components/empty-state/empty-state.component";
 import { useTranslation } from "react-i18next";
-import { isEmpty } from "lodash-es";
 import useChartBasePath from "../../utils/use-chart-base";
 
 export default function NotesOverview(props: NotesOverviewProps) {
@@ -117,7 +116,7 @@ export default function NotesOverview(props: NotesOverviewProps) {
                     <div>{note?.location?.name}</div>
                   </td>
                   <td className={styles.noteAuthor}>
-                    {!isEmpty(note.encounterProviders)
+                    {note.encounterProviders.length
                       ? note?.encounterProviders[0]?.provider?.person?.display
                       : "\u2014"}
                   </td>

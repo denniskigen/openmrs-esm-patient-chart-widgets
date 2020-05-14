@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import SummaryCard from "../../ui-components/cards/summary-card.component";
 import styles from "./heightandweight-record.css";
-import dayjs from "dayjs";
 import { getDimensions } from "./heightandweight.resource";
 import { useCurrentPatient } from "@openmrs/esm-api";
-import { isEmpty } from "lodash-es";
 import {
   convertToPounds,
   convertToFeet,
@@ -29,7 +27,7 @@ export default function HeightAndWeightRecord(
     getDimensions(patientUuid).subscribe(response => {
       setDimensions(
         response.find(
-          dimension => dimension.obsData.weight.uuid === heightWeightUuid
+          dimension => dimension.obsData.weight.id === heightWeightUuid
         )
       );
     });
@@ -52,89 +50,93 @@ export default function HeightAndWeightRecord(
 
   function displayHeightAndWeight() {
     return (
-      <div className={styles.heightAndWeightDetailedSummary}>
-        <SummaryCard name="Height & Weight" styles={{ width: "100%" }}>
-          <div className={styles.heightAndWeightContainer}>
-            {!isEmpty(dimensions) && (
-              <table className={styles.summaryTable}>
-                <tbody>
-                  <tr>
-                    <td>Measured at </td>
-                    <td>
-                      {[
-                        customDateFormat(
-                          dimensions?.obsData?.weight?.effectiveDatetime,
-                          "DD-MMM-YYYY"
-                        ),
-                        customDateFormat(
-                          dimensions?.obsData?.weight?.effectiveDatetime,
-                          "HH:mm A"
-                        )
-                      ].join(" ")}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Weight</td>
-                    <td>
-                      {dimensions.weight} <span>kg</span>
-                    </td>
-                    <td>
-                      {convertToPounds(dimensions.weight)} <span>lbs</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Height</td>
-                    <td>
-                      {dimensions.height} <span>cm</span>
-                    </td>
-                    <td>
-                      {convertToFeet(dimensions.height)} <span>feet</span>{" "}
-                      {convertoToInches(dimensions.height)} <span>inches</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>BMI</td>
-                    <td>
-                      {dimensions.bmi} <span>Kg/m2</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            )}
-          </div>
-        </SummaryCard>
+      <>
+        {Object.keys(dimensions).length > 0 && (
+          <div className={styles.heightAndWeightDetailedSummary}>
+            <SummaryCard name="Height & Weight" styles={{ width: "100%" }}>
+              <div className={styles.heightAndWeightContainer}>
+                <table className={styles.summaryTable}>
+                  <tbody>
+                    <tr>
+                      <td>Measured at </td>
+                      <td>
+                        {[
+                          customDateFormat(
+                            dimensions?.obsData?.weight?.effectiveDatetime,
+                            "DD-MMM-YYYY"
+                          ),
+                          customDateFormat(
+                            dimensions?.obsData?.weight?.effectiveDatetime,
+                            "HH:mm A"
+                          )
+                        ].join(" ")}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Weight</td>
+                      <td>
+                        {dimensions.weight} <span>kg</span>
+                      </td>
+                      <td>
+                        {convertToPounds(dimensions.weight)} <span>lbs</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Height</td>
+                      <td>
+                        {dimensions.height} <span>cm</span>
+                      </td>
+                      <td>
+                        {convertToFeet(dimensions.height)} <span>feet</span>{" "}
+                        {convertoToInches(dimensions.height)}{" "}
+                        <span>inches</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>BMI</td>
+                      <td>
+                        {dimensions.bmi} <span>Kg/m2</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                }
+              </div>
+            </SummaryCard>
 
-        <SummaryCard
-          name="Details"
-          styles={{
-            width: "100%",
-            backgroundColor: "var(--omrs-color-bg-medium-contrast)"
-          }}
-        >
-          <div className={`omrs-type-body-regular ${styles.summaryCard}`}>
-            <table className={styles.heightAndWeightDetailsTable}>
-              <thead>
-                <tr>
-                  <td>Last updated</td>
-                  <td>Last updated by</td>
-                  <td>Last updated location</td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                </tr>
-              </tbody>
-            </table>
+            <SummaryCard
+              name="Details"
+              styles={{
+                width: "100%",
+                backgroundColor: "var(--omrs-color-bg-medium-contrast)"
+              }}
+            >
+              <div className={`omrs-type-body-regular ${styles.summaryCard}`}>
+                <table className={styles.heightAndWeightDetailsTable}>
+                  <thead>
+                    <tr>
+                      <td>Last updated</td>
+                      <td>Last updated by</td>
+                      <td>Last updated location</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>-</td>
+                      <td>-</td>
+                      <td>-</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </SummaryCard>
           </div>
-        </SummaryCard>
-      </div>
+        )}
+      </>
     );
   }
 
-  return !isEmpty(dimensions)
+  return dimensions && Object.keys(dimensions).length > 0
     ? displayHeightAndWeight()
     : displayNoHeightAndWeight();
 }

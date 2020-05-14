@@ -13,9 +13,9 @@ import {
 import { createErrorHandler } from "@openmrs/esm-error-handling";
 import SummaryCard from "../../ui-components/cards/summary-card.component";
 import dayjs from "dayjs";
-import { filter, includes, map } from "lodash-es";
 import { useHistory } from "react-router-dom";
 import { DataCaptureComponentProps } from "../shared-utils";
+import { filter, includes, map } from "lodash-es";
 
 export default function ProgramsForm(props: ProgramsFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
@@ -24,8 +24,8 @@ export default function ProgramsForm(props: ProgramsFormProps) {
   const [enableEditButtons, setEnableEditButtons] = useState(false);
   const [patientProgram, setPatientProgram] = useState(null);
   const [allPrograms, setAllPrograms] = useState(null);
-  const [eligiblePrograms, setEligiblePrograms] = useState(null);
-  const [enrolledPrograms, setEnrolledPrograms] = useState(null);
+  const [eligiblePrograms, setEligiblePrograms] = useState([]);
+  const [enrolledPrograms, setEnrolledPrograms] = useState([]);
   const [location, setLocation] = useState("");
   const [program, setProgram] = useState("");
   const [enrollmentDate, setEnrollmentDate] = useState(
@@ -64,7 +64,10 @@ export default function ProgramsForm(props: ProgramsFormProps) {
         createErrorHandler()
       );
       const sub3 = fetchEnrolledPrograms(patientUuid).subscribe(
-        enrolledPrograms => setEnrolledPrograms(enrolledPrograms),
+        enrolledPrograms =>
+          setEnrolledPrograms(
+            enrolledPrograms.filter(program => !program.dateCompleted)
+          ),
         createErrorHandler()
       );
 
@@ -228,6 +231,7 @@ export default function ProgramsForm(props: ProgramsFormProps) {
                 <label htmlFor="enrollmentDate">Date enrolled</label>
                 <div className="omrs-datepicker">
                   <input
+                    id="enrollmentDate"
                     type="date"
                     name="enrollmentDate"
                     required
@@ -243,6 +247,7 @@ export default function ProgramsForm(props: ProgramsFormProps) {
                 <label htmlFor="completionDate">Date completed</label>
                 <div className="omrs-datepicker">
                   <input
+                    id="completionDate"
                     type="date"
                     name="completionDate"
                     onChange={evt => setCompletionDate(evt.target.value)}
@@ -339,6 +344,7 @@ export default function ProgramsForm(props: ProgramsFormProps) {
                     <label htmlFor="enrollmentDate">Date enrolled</label>
                     <div className="omrs-datepicker">
                       <input
+                        id="enrollmentDate"
                         type="date"
                         name="enrollmentDate"
                         required
@@ -356,6 +362,7 @@ export default function ProgramsForm(props: ProgramsFormProps) {
                     <label htmlFor="completionDate">Date completed</label>
                     <div className="omrs-datepicker">
                       <input
+                        id="completionDate"
                         type="date"
                         name="completionDate"
                         onChange={evt => setCompletionDate(evt.target.value)}

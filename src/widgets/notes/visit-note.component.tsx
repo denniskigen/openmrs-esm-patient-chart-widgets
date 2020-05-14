@@ -10,8 +10,7 @@ import {
 } from "./visit-notes.resource";
 import { createErrorHandler } from "@openmrs/esm-error-handling";
 import dayjs from "dayjs";
-import { debounce } from "lodash";
-import { isEmpty, remove } from "lodash-es";
+import debounce from "lodash-es/debounce";
 import { useCurrentPatient } from "@openmrs/esm-api";
 import {
   diagnosisType,
@@ -102,7 +101,7 @@ export default function VisitNotes(props: VisitNotesProp) {
   }, [searchTerm]);
 
   useEffect(() => {
-    if (isEmpty(searchTerm)) {
+    if (!searchTerm) {
       setSearchResults([]);
     }
   }, [searchTerm]);
@@ -111,12 +110,11 @@ export default function VisitNotes(props: VisitNotesProp) {
     setSearchResults([]);
     setSearchTerm(null);
     searchTermRef.current.value = "";
-    if (isEmpty(diagnosisArray)) {
-      result.primary = true;
-      setDiagnosisArray([result, ...diagnosisArray]);
-    } else {
+    if (diagnosisArray.length) {
       setDiagnosisArray([result, ...diagnosisArray]);
     }
+    result.primary = true;
+    setDiagnosisArray([result, ...diagnosisArray]);
   };
 
   const handlePrimaryChange = (changedDiagnosis: diagnosisType) => {
@@ -195,11 +193,12 @@ export default function VisitNotes(props: VisitNotesProp) {
   };
 
   const handleRemoveDiagnosis = (diagnosisToRemove: diagnosisType) => {
-    remove(
-      diagnosisArray,
-      diagnosis => diagnosis.concept.uuid == diagnosisToRemove.concept.uuid
+    setDiagnosisArray(
+      diagnosisArray.filter(
+        diagnosis =>
+          diagnosis?.concept?.uuid !== diagnosisToRemove?.concept?.uuid
+      )
     );
-    setDiagnosisArray(diagnosisArray);
     setHasChanged(!hasChanged);
   };
 
@@ -314,7 +313,7 @@ export default function VisitNotes(props: VisitNotesProp) {
                 />
                 <div
                   className={`${styles.searchResultsContainer} ${
-                    isEmpty(searchResults) ? styles.inVisible : ""
+                    searchResults.length ? "" : styles.inVisible
                   }`}
                 >
                   <div className={styles.searchResults}>
@@ -350,9 +349,8 @@ export default function VisitNotes(props: VisitNotesProp) {
               <div>
                 <span>Primary Diagnosis:</span>
                 <hr />
-                {!isEmpty(
-                  diagnosisArray.filter(diagnosis => diagnosis.primary === true)
-                ) ? (
+                {diagnosisArray.filter(diagnosis => diagnosis.primary === true)
+                  .length ? (
                   <div>
                     {diagnosisArray &&
                       diagnosisArray
@@ -424,11 +422,8 @@ export default function VisitNotes(props: VisitNotesProp) {
               <div>
                 <span>Secondary Diagnoses:</span>
                 <hr />
-                {!isEmpty(
-                  diagnosisArray.filter(
-                    diagnosis => diagnosis.primary === false
-                  )
-                ) ? (
+                {diagnosisArray.filter(diagnosis => diagnosis.primary === false)
+                  .length ? (
                   <>
                     {diagnosisArray &&
                       diagnosisArray

@@ -7,7 +7,6 @@ import { SummaryCard } from "../../openmrs-esm-patient-chart-widgets";
 import styles from "./appointments-detailed-summary.css";
 import { Link, useRouteMatch } from "react-router-dom";
 import AppointmentsForm from "./appointments-form.component";
-import { isEmpty } from "lodash-es";
 import { openWorkspaceTab } from "../shared-utils";
 
 export default function AppointmentsDetailedSummary(
@@ -86,39 +85,43 @@ export default function AppointmentsDetailedSummary(
 
   function displayNoPatientAppointments() {
     return (
-      isEmpty(patientAppointments) && (
-        <SummaryCard
-          name="Appointments"
-          styles={{ width: "100%" }}
-          addComponent={AppointmentsForm}
-          showComponent={() =>
-            openWorkspaceTab(AppointmentsForm, "Appointment Form")
-          }
-        >
-          <div className={styles.allergyMargin}>
-            <p className="omrs-bold">
-              The patient's appointment schedule is not documented.
-            </p>
-            <p className="omrs-bold">
-              <button
-                style={{ cursor: "pointer" }}
-                className="omrs-btn omrs-outlined-action"
-                type="button"
-                onClick={() =>
-                  openWorkspaceTab(AppointmentsForm, "Appointment Form")
-                }
-              >
-                Add patient appointment
-              </button>
-            </p>
-          </div>
-        </SummaryCard>
-      )
+      <SummaryCard
+        name="Appointments"
+        styles={{ width: "100%" }}
+        addComponent={AppointmentsForm}
+        showComponent={() =>
+          openWorkspaceTab(AppointmentsForm, "Appointment Form")
+        }
+      >
+        <div>
+          <p className="omrs-bold">
+            The patient's appointment schedule is not documented.
+          </p>
+          <p className="omrs-bold">
+            <button
+              style={{ cursor: "pointer" }}
+              className="omrs-btn omrs-outlined-action"
+              type="button"
+              onClick={() =>
+                openWorkspaceTab(AppointmentsForm, "Appointment Form")
+              }
+            >
+              Add patient appointment
+            </button>
+          </p>
+        </div>
+      </SummaryCard>
     );
   }
 
-  return !isEmpty(patientAppointments)
-    ? displayPatientAppointments()
-    : displayNoPatientAppointments();
+  return (
+    patientAppointments && (
+      <div>
+        {patientAppointments.length > 0
+          ? displayPatientAppointments()
+          : displayNoPatientAppointments()}
+      </div>
+    )
+  );
 }
 type AppointmentsDetailedSummaryProps = {};

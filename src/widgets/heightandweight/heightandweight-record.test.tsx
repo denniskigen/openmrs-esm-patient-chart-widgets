@@ -1,15 +1,17 @@
 import React from "react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, useParams } from "react-router-dom";
 import HeightAndWeightRecord from "./heightandweight-record.component";
 import { getDimensions } from "./heightandweight.resource";
 import { useCurrentPatient } from "@openmrs/esm-api";
 import { mockDimensionsResponse } from "../../../__mocks__/dimensions.mock";
 import { mockPatient } from "../../../__mocks__/patient.mock";
-import { render, wait, cleanup } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
 import { of } from "rxjs";
 
 const mockUseCurrentPatient = useCurrentPatient as jest.Mock;
 const mockGetDimensions = getDimensions as jest.Mock;
+const mockUseParams = useParams as jest.Mock;
 
 jest.mock("./heightandweight.resource", () => ({
   getDimensions: jest.fn()
@@ -30,60 +32,63 @@ describe("<HeightAndWeightRecord/>", () => {
   beforeEach(() => {
     mockUseCurrentPatient.mockReset();
     mockUseCurrentPatient.mockReturnValue([false, patient, patient.id, null]);
+    mockUseParams.mockReturnValue("6113f91d-e30c-4b65-a8d8-cc04dd7b1db3");
   });
 
-  afterEach(cleanup);
-
-  it("render withour dying", () => {
+  it("renders without dying", async () => {
     mockGetDimensions.mockReturnValue(of(mockDimensionsResponse));
-    <BrowserRouter>
-      <HeightAndWeightRecord />
-    </BrowserRouter>;
+
+    render(
+      <BrowserRouter>
+        <HeightAndWeightRecord />
+      </BrowserRouter>
+    );
+
+    await screen.findByText("Height & Weight");
   });
 
   it("should display the height, weight, bmi correctly", async () => {
     mockGetDimensions.mockReturnValue(of(mockDimensionsResponse));
-    const wrapper = render(
+
+    render(
       <BrowserRouter>
         <HeightAndWeightRecord />
       </BrowserRouter>
     );
 
-    expect(wrapper).toBeTruthy();
-    expect(wrapper.getByText("Height & Weight").textContent).toBeTruthy();
-    expect(wrapper.getByText("Measured at").textContent).toBeTruthy();
-    expect(wrapper.getByText("Weight").textContent).toBeTruthy();
-    expect(wrapper.getByText("85").textContent).toBeTruthy();
-    expect(wrapper.getByText("kg").textContent).toBeTruthy();
-    expect(wrapper.getByText("187.43").textContent).toBeTruthy();
-    expect(wrapper.getByText("lbs").textContent).toBeTruthy();
-    expect(wrapper.getByText("Height").textContent).toBeTruthy();
-    expect(wrapper.getByText("165").textContent).toBeTruthy();
-    expect(wrapper.getByText("cm").textContent).toBeTruthy();
-    expect(wrapper.getByText("feet").textContent).toBeTruthy();
-    expect(wrapper.getByText("inches").textContent).toBeTruthy();
-    expect(wrapper.getByText("BMI").textContent).toBeTruthy();
-    expect(wrapper.getByText("31.2").textContent).toBeTruthy();
-    expect(wrapper.getByText("Kg/m2").textContent).toBeTruthy();
-    expect(wrapper.getByText("Details").textContent).toBeTruthy();
-    expect(wrapper.getByText("Last updated").textContent).toBeTruthy();
-    expect(wrapper.getByText("Last updated by").textContent).toBeTruthy();
-    expect(wrapper.getByText("Last updated location").textContent).toBeTruthy();
+    await screen.findByText("Height & Weight");
+    expect(screen.getByText("Measured at")).toBeInTheDocument();
+    expect(screen.getByText("Weight")).toBeInTheDocument();
+    expect(screen.getByText("85")).toBeInTheDocument();
+    expect(screen.getByText("kg")).toBeInTheDocument();
+    expect(screen.getByText("187.43")).toBeInTheDocument();
+    expect(screen.getByText("lbs")).toBeInTheDocument();
+    expect(screen.getByText("Height")).toBeInTheDocument();
+    expect(screen.getByText("165")).toBeInTheDocument();
+    expect(screen.getByText("cm")).toBeInTheDocument();
+    expect(screen.getByText("feet")).toBeInTheDocument();
+    expect(screen.getByText("inches")).toBeInTheDocument();
+    expect(screen.getByText("BMI")).toBeInTheDocument();
+    expect(screen.getByText("31.2")).toBeInTheDocument();
+    expect(screen.getByText("Kg/m2")).toBeInTheDocument();
+    expect(screen.getByText("Details")).toBeInTheDocument();
+    expect(screen.getByText("Last updated")).toBeInTheDocument();
+    expect(screen.getByText("Last updated by")).toBeInTheDocument();
+    expect(screen.getByText("Last updated location")).toBeInTheDocument();
   });
 
   it("should display error message when response is empty", async () => {
     mockGetDimensions.mockReturnValue(of([]));
-    const wrapper = render(
+
+    const { getByText } = render(
       <BrowserRouter>
         <HeightAndWeightRecord />
       </BrowserRouter>
     );
 
-    await wait(() => {
-      expect(
-        wrapper.getByText("The patient's Height and Weight is not documented.")
-      ).toBeTruthy();
-      expect(wrapper.getByText("add patient height and weight")).toBeTruthy();
-    });
+    await screen.findByText(
+      "The patient's Height and Weight is not documented."
+    );
+    expect(getByText("add patient height and weight")).toBeTruthy();
   });
 });
