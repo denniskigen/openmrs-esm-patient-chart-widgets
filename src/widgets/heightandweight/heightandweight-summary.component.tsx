@@ -37,7 +37,7 @@ function HeightAndWeightSummary(props: HeightAndWeightSummaryProps) {
       }}
     >
       <SummaryCard
-        name={t("Height & Weight", "Height & Weight")}
+        name="Height & Weight"
         styles={{ flex: 1, margin: ".5rem" }}
         addComponent={VitalsForm}
         showComponent={() => openWorkspaceTab(VitalsForm, "Vitals Form")}

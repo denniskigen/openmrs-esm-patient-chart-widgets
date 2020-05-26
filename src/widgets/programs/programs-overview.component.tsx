@@ -41,26 +41,21 @@ export default function ProgramsOverview(props: ProgramsOverviewProps) {
     <>
       {patientPrograms && patientPrograms.length > 0 ? (
         <SummaryCard
-          name={t("Care Programs", "Care Programs")}
+          name="Care Programs"
           link={programsPath}
           styles={{ margin: "1.25rem, 1.5rem" }}
           addComponent={ProgramsForm}
-          showComponent={() =>
-            openWorkspaceTab(
-              ProgramsForm,
-              `${t("Programs Form", "Programs Form")}`
-            )
-          }
+          showComponent={() => openWorkspaceTab(ProgramsForm, "Programs Form")}
         >
           <SummaryCardRow>
             <SummaryCardRowContent>
               <HorizontalLabelValue
-                label={t("Active Programs", "Active Programs")}
+                label="Active Programs"
                 labelStyles={{
                   color: "var(--omrs-color-ink-medium-contrast)",
                   fontFamily: "Work Sans"
                 }}
-                value={t("Since", "Since")}
+                value="Since"
                 valueStyles={{
                   color: "var(--omrs-color-ink-medium-contrast)",
                   fontFamily: "Work Sans"

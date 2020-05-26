@@ -31,10 +31,10 @@ export default function EditVisit(props: EditVisitProps) {
       <table className={styles.editVisitTable}>
         <thead>
           <tr>
-            <td>{t("visitStartDate", "Visit Start Date")}</td>
-            <td>{t("visittype", "Visit Type")}</td>
-            <td>{t("location", "Location")}</td>
-            <td colSpan={3}>{t("visitenddate", "Visit End Date")}</td>
+            <td>Visit Start Date</td>
+            <td>Visit Type</td>
+            <td>Location</td>
+            <td colSpan={3}>Visit End Date</td>
           </tr>
         </thead>
         <tbody>
@@ -63,7 +63,7 @@ export default function EditVisit(props: EditVisitProps) {
                         });
                       }}
                     >
-                      {t("edit", "Edit")}
+                      Edit
                     </button>
                   </td>
                   <td>
@@ -79,7 +79,7 @@ export default function EditVisit(props: EditVisitProps) {
                         props.closeComponent();
                       }}
                     >
-                      {t("load", "Load")}
+                      Load
                     </button>
                   </td>
                 </tr>
@@ -97,7 +97,7 @@ export default function EditVisit(props: EditVisitProps) {
           className={`omrs-btn omrs-outlined-action`}
           onClick={props.onCanceled}
         >
-          {t("cancel", "Cancel")}
+          Cancel
         </button>
       </div>
     </div>

@@ -56,7 +56,7 @@ export default function MedicationsDetailedSummary(
     return (
       <React.Fragment>
         <SummaryCard
-          name={t("Medications - current", "Medications - current")}
+          name="Medications - current"
           addComponent={MedicationOrderBasket}
           showComponent={() =>
             openWorkspaceTab(MedicationOrderBasket, "Medication Order", {
@@ -182,7 +182,7 @@ export default function MedicationsDetailedSummary(
       <>
         <React.Fragment>
           <SummaryCard
-            name={t("Medications - past", "Medications - past")}
+            name="Medications - past"
             addComponent={MedicationOrderBasket}
             showComponent={() =>
               openWorkspaceTab(MedicationOrderBasket, "Medication Order", {
@@ -290,7 +290,7 @@ export default function MedicationsDetailedSummary(
             displayCurrentMedications()
           ) : (
             <SummaryCard
-              name={t("Medications - current", "Medications - current")}
+              name="Medications - current"
               styles={{ width: "100%" }}
               addComponent={MedicationOrderBasket}
               showComponent={() =>
@@ -312,7 +312,7 @@ export default function MedicationsDetailedSummary(
             displayPastMedications()
           ) : (
             <SummaryCard
-              name={t("Medications - past", "Medications - past")}
+              name="Medications - past"
               styles={{ width: "100%" }}
               addComponent={MedicationOrderBasket}
               showComponent={() =>

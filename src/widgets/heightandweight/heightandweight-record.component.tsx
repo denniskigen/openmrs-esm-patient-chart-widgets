@@ -50,11 +50,8 @@ export default function HeightAndWeightRecord(
       <EmptyState
         showComponent={() => openWorkspaceTab(VitalsForm, "Vitals Form")}
         addComponent={VitalsForm}
-        name={t("Height & Weight", "Height & Weight")}
-        displayText={t(
-          "The patient's Height and Weight is not documented.",
-          "The patient's Height and Weight is not documented."
-        )}
+        name="Height & Weight"
+        displayText="The patient's Height and Weight is not documented."
       />
     );
   }
@@ -62,10 +59,7 @@ export default function HeightAndWeightRecord(
   function displayHeightAndWeight() {
     return (
       <div className={styles.heightAndWeightDetailedSummary}>
-        <SummaryCard
-          name={t("Height & Weight", "Height & Weight")}
-          styles={{ width: "100%" }}
-        >
+        <SummaryCard name="Height & Weight" styles={{ width: "100%" }}>
           <div className={styles.heightAndWeightContainer}>
             {!isEmpty(dimensions) && (
               <table className={styles.summaryTable}>
@@ -117,7 +111,7 @@ export default function HeightAndWeightRecord(
         </SummaryCard>
 
         <SummaryCard
-          name={t("Details", "Details")}
+          name="Details"
           styles={{
             width: "100%",
             backgroundColor: "var(--omrs-color-bg-medium-contrast)",

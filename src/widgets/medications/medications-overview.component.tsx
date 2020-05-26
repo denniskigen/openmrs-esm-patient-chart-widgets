@@ -45,7 +45,7 @@ export default function MedicationsOverview(props: MedicationsOverviewProps) {
     <>
       {patientMedications && patientMedications.length > 0 ? (
         <SummaryCard
-          name={t("Active Medications", "Active Medications")}
+          name="Active Medications"
           styles={{ width: "100%" }}
           link={`${props.basePath}`}
           showComponent={() =>

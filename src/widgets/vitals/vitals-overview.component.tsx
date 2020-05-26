@@ -57,7 +57,7 @@ export default function VitalsOverview(props: VitalsOverviewProps) {
     <>
       {currentVitals && currentVitals.length > 0 ? (
         <SummaryCard
-          name={t("vitals", "Vitals")}
+          name="Vitals"
           link={props.basePath}
           addComponent={VitalsForm}
           showComponent={() => openWorkspaceTab(VitalsForm, "Vitals Form")}

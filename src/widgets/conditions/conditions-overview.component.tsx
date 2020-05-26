@@ -41,7 +41,7 @@ export default function ConditionsOverview(props: ConditionsOverviewProps) {
 
   return (
     <SummaryCard
-      name={t("conditions", "Conditions")}
+      name="Conditions"
       styles={{ margin: "1.25rem, 1.5rem" }}
       link={conditionsPath}
       addComponent={ConditionsForm}

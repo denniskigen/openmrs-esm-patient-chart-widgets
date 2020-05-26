@@ -326,7 +326,7 @@ export default function MedicationOrderBasket(
           style={{ width: "50%" }}
           onClick={closeForm}
         >
-          {t("close", "Close")}
+          "Close"
         </button>
         <button
           className={`${
@@ -338,7 +338,7 @@ export default function MedicationOrderBasket(
           disabled={!enableButtons}
           onClick={handleSaveOrders}
         >
-          {t("sign", "Sign")}
+          "Sign"
         </button>
       </div>
     </div>
