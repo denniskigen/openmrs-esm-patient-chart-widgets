@@ -1,43 +1,18 @@
 import React from "react";
-import SummaryCard from "../cards/summary-card.component";
-import { DataCaptureComponentProps } from "../../widgets/shared-utils";
-import styles from "./empty-state.css";
-import { match } from "react-router-dom";
-import { Trans } from "react-i18next";
 
-export default function EmptyState(props: EmptyStateProps) {
+import { Tile } from "carbon-components-react";
+
+import EmptyStateIllustration from "../empty-state/empty-state-illustration.component";
+
+const EmptyState = ({ name, showComponent, addComponent, displayText }) => {
+  // return <EmptyStateIllustration />;
   return (
-    <SummaryCard
-      name={props.name}
-      addComponent={props.addComponent}
-      showComponent={props.showComponent}
-    >
-      <div
-        style={props.styles}
-        className={`omrs-medium ${styles.emptyStateText}`}
-      >
-        <p className="omrs-type-body-regular">
-          <Trans
-            i18nKey="emptyStateText"
-            values={{ displayText: props.displayText.toLowerCase() }}
-          >
-            This patient has no {props.displayText} recorded in the system.
-          </Trans>
-        </p>
-      </div>
-    </SummaryCard>
+    <Tile style={{ width: "35.563rem", height: "12.375rem" }}>
+      <h1>Vitals</h1>
+      <p>There are no {displayText}</p>
+      <a href="#">Add a {displayText}</a>
+    </Tile>
   );
-}
-
-type EmptyStateProps = {
-  name: string;
-  displayText: string;
-  styles?: React.CSSProperties;
-  addComponent?: React.FC<RouteBasedComponentProps | DataCaptureComponentProps>;
-  showComponent?: () => void;
 };
 
-type RouteBasedComponentProps = {
-  basePath?: string;
-  match?: match;
-};
+export default EmptyState;
